@@ -1,0 +1,10 @@
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\bin\Debug\Excel-Reports-Cleaner.exe.config
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\bin\Debug\Excel-Reports-Cleaner.exe
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\bin\Debug\Excel-Reports-Cleaner.pdb
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel-Reports-Cleaner.csprojAssemblyReference.cache
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel_Reports_Cleaner.frmCleaner.resources
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel_Reports_Cleaner.Properties.Resources.resources
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel-Reports-Cleaner.csproj.GenerateResource.cache
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel-Reports-Cleaner.csproj.CoreCompileInputs.cache
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel-Reports-Cleaner.exe
+C:\Users\52866\source\repos\Excel-Reports-Cleaner\Excel-Reports-Cleaner\obj\Debug\Excel-Reports-Cleaner.pdb
