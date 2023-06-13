@@ -32,8 +32,6 @@
             this.tbFile = new System.Windows.Forms.TextBox();
             this.pbLoad = new System.Windows.Forms.PictureBox();
             this.pbClean = new System.Windows.Forms.PictureBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.listBox2 = new System.Windows.Forms.ListBox();
             ((System.ComponentModel.ISupportInitialize)(this.pbLoad)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClean)).BeginInit();
             this.SuspendLayout();
@@ -82,29 +80,11 @@
             this.pbClean.TabStop = false;
             this.pbClean.Click += new System.EventHandler(this.pbClean_Click);
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(74, 126);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(120, 199);
-            this.listBox1.TabIndex = 4;
-            // 
-            // listBox2
-            // 
-            this.listBox2.FormattingEnabled = true;
-            this.listBox2.Location = new System.Drawing.Point(259, 126);
-            this.listBox2.Name = "listBox2";
-            this.listBox2.Size = new System.Drawing.Size(120, 199);
-            this.listBox2.TabIndex = 5;
-            // 
             // frmCleaner
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(446, 357);
-            this.Controls.Add(this.listBox2);
-            this.Controls.Add(this.listBox1);
+            this.ClientSize = new System.Drawing.Size(446, 98);
             this.Controls.Add(this.pbClean);
             this.Controls.Add(this.pbLoad);
             this.Controls.Add(this.tbFile);
@@ -127,8 +107,6 @@
         private System.Windows.Forms.TextBox tbFile;
         private System.Windows.Forms.PictureBox pbLoad;
         private System.Windows.Forms.PictureBox pbClean;
-        private System.Windows.Forms.ListBox listBox1;
-        private System.Windows.Forms.ListBox listBox2;
     }
 }
 

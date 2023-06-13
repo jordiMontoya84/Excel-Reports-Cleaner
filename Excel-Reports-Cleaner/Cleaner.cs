@@ -14,13 +14,13 @@ namespace Excel_Reports_Cleaner
 {
     public partial class frmCleaner : Form
     {
+        List<string> cells;
         Microsoft.Office.Interop.Excel.Application excelApp;
-        List<string> cells = new List<string>();
-        List<string> ranges = new List<string>();
         int[,] states;
 
         public frmCleaner()
         {
+            cells = new List<string>();
             excelApp = new Microsoft.Office.Interop.Excel.Application();
             states = new int[,]{ {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, 
                                  {  1,  2,300,300,300,300,300,300,300,300 },
@@ -34,6 +34,7 @@ namespace Excel_Reports_Cleaner
         private void pbCargar_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
+            ofd.Filter = "Excel (*.xlsx)|*.xlsx";
             ofd.ShowDialog();
             if (ofd.FileName == null)
                 return;
@@ -42,13 +43,10 @@ namespace Excel_Reports_Cleaner
             pbClean.Enabled = true;
         }
         // 462, 134
-        private void readData(Microsoft.Office.Interop.Excel.Workbook book)
+        private void readData(Microsoft.Office.Interop.Excel.Worksheet sheet)
         {
-            Microsoft.Office.Interop.Excel.Worksheet sheet =
-                (Microsoft.Office.Interop.Excel.Worksheet)book.Sheets[1];
             int rows = sheet.UsedRange.Rows.Count;
             int columns = sheet.UsedRange.Columns.Count;
-            
 
             for (int i = 0; i<= rows; i++)
             {
@@ -78,12 +76,7 @@ namespace Excel_Reports_Cleaner
                 if (state >= 100)
                 {
                     if (state < 300)
-                    {
-                        if (state == 100)
-                            listBox1.Items.Add(token);
-                        else
-                            listBox2.Items.Add(token);
-                    }
+                        cells.Add(token);
                     state = 0;
                     token = "";
                 }
@@ -125,9 +118,37 @@ namespace Excel_Reports_Cleaner
         }
 
         private void pbClean_Click(object sender, EventArgs e)
-        {
+        {   
             Microsoft.Office.Interop.Excel.Workbook excelBook = excelApp.Workbooks.Open(tbFile.Text);
-            readData(excelBook);
+            int nSheets = excelBook.Worksheets.Count;
+            for (int i = 1; i <= nSheets; i++)
+            {
+                Microsoft.Office.Interop.Excel.Worksheet sheet = excelBook.Worksheets[i];
+                cells.Clear();
+                readData(sheet);
+                foreach(string cell in cells)
+                {
+                    string[] token = cell.Split(':');
+                    try
+                    {
+                        if (token.Length > 1)
+                            sheet.Range[token[0], token[1]].Value = "";
+                        else
+                            sheet.Range[token[0], token[0]].Value = "";
+                    }catch(Exception ex)
+                    {
+
+                    }
+                }
+            }
+
+            SaveFileDialog sfd = new SaveFileDialog();
+            sfd.Filter = "Excel (*.xlsx)|*.xlsx";
+            sfd.ShowDialog();
+            if (sfd.FileName == null)
+                return;
+            excelBook.SaveAs(sfd.FileName);
+            excelBook.Close();
         }
     }
 }
