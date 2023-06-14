@@ -1,13 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using Microsoft.Office.Interop;
+using Excel = Microsoft.Office.Interop.Excel;
  
 
 namespace Excel_Reports_Cleaner
@@ -15,13 +9,13 @@ namespace Excel_Reports_Cleaner
     public partial class frmCleaner : Form
     {
         List<string> cells;
-        Microsoft.Office.Interop.Excel.Application excelApp;
+        Excel.Application excelApp;
         int[,] states;
 
         public frmCleaner()
         {
             cells = new List<string>();
-            excelApp = new Microsoft.Office.Interop.Excel.Application();
+            excelApp = new Excel.Application();
             states = new int[,]{ {  1,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, 
                                  {  1,  2,300,300,300,300,300,300,300,300 },
                                  {300,  2,100,100,100,100,  3,100,100,100 },
@@ -29,30 +23,29 @@ namespace Excel_Reports_Cleaner
                                  {  4,  5,301,301,301,301,301,301,301,301 },
                                  {301,  5,301,301,301,301,301,101,101,101 }};
             InitializeComponent();
+            pBarClean.Step = 1;
         }
 
         private void pbCargar_Click(object sender, EventArgs e)
         {
             OpenFileDialog ofd = new OpenFileDialog();
-            ofd.Filter = "Excel (*.xlsx)|*.xlsx";
-            ofd.ShowDialog();
-            if (ofd.FileName == null)
-                return;
-
-            tbFile.Text = ofd.FileName;
-            pbClean.Enabled = true;
-        }
-        // 462, 134
-        private void readData(Microsoft.Office.Interop.Excel.Worksheet sheet)
-        {
-            int rows = sheet.UsedRange.Rows.Count;
-            int columns = sheet.UsedRange.Columns.Count;
-
-            for (int i = 0; i<= rows; i++)
+            ofd.Filter = "Excel (*.xlsx;*.xls)|*.xlsx;*.xls";
+            if (ofd.ShowDialog() == DialogResult.OK)
             {
-                for(int j = 0; j<=columns; j++)
+                tbFile.Text = ofd.FileName;
+                pbClean.Enabled = true;
+            }            
+        }
+        private void readData(dynamic[,] range)
+        {
+            int rows = range.GetLength(0);
+            int columns = range.GetLength(1);
+
+            for (int i = 1; i<= rows; i++)
+            {
+                for(int j = 1; j<=columns; j++)
                 {
-                    string cell = Convert.ToString(((Microsoft.Office.Interop.Excel.Range)sheet.Cells[i + 1, j + 1]).Formula);
+                    string cell = Convert.ToString(range[i,j]);
                     if (cell == null || cell.Length == 0)
                         continue;
 
@@ -60,6 +53,7 @@ namespace Excel_Reports_Cleaner
                         readCell(cell.Substring(1));
                 }
             }
+            pBarClean.PerformStep();
         }
 
         private void readCell(string cell)
@@ -68,6 +62,7 @@ namespace Excel_Reports_Cleaner
             int state = 0;
             string token = "";
             char ch;
+
             for(int i = 0; i< cell.Length; i++)
             {
                 ch = Convert.ToChar(cell.Substring(i, 1));
@@ -119,36 +114,44 @@ namespace Excel_Reports_Cleaner
 
         private void pbClean_Click(object sender, EventArgs e)
         {   
-            Microsoft.Office.Interop.Excel.Workbook excelBook = excelApp.Workbooks.Open(tbFile.Text);
+            Excel.Workbook excelBook = excelApp.Workbooks.Open(tbFile.Text);
             int nSheets = excelBook.Worksheets.Count;
+            pBarClean.Value = 0;
+            pBarClean.Maximum = nSheets * 2;
+
             for (int i = 1; i <= nSheets; i++)
             {
-                Microsoft.Office.Interop.Excel.Worksheet sheet = excelBook.Worksheets[i];
+                Excel.Worksheet sheet = excelBook.Worksheets[i];
                 cells.Clear();
-                readData(sheet);
+                readData(sheet.UsedRange.Formula);
                 foreach(string cell in cells)
                 {
                     string[] token = cell.Split(':');
                     try
                     {
                         if (token.Length > 1)
-                            sheet.Range[token[0], token[1]].Value = "";
+                            sheet.Range[token[0], token[1]].Value2 = "";
                         else
-                            sheet.Range[token[0], token[0]].Value = "";
-                    }catch(Exception ex)
-                    {
-
-                    }
+                            sheet.Range[token[0], token[0]].Value2 = "";
+                    }catch(Exception ex) {}
                 }
+                pBarClean.PerformStep();
             }
 
             SaveFileDialog sfd = new SaveFileDialog();
-            sfd.Filter = "Excel (*.xlsx)|*.xlsx";
-            sfd.ShowDialog();
-            if (sfd.FileName == null)
-                return;
-            excelBook.SaveAs(sfd.FileName);
-            excelBook.Close();
+            sfd.Filter = "Excel (*.xlsx;*.xls)|*.xlsx;*.xls";
+
+            if (sfd.ShowDialog() == DialogResult.OK)
+            {
+                excelBook.SaveAs(sfd.FileName);
+            }
+                
+            excelBook.Close(false);
+        }
+
+        private void frmCleaner_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            excelApp.Quit();
         }
     }
 }
