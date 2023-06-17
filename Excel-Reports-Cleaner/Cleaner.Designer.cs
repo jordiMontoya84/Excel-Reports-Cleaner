@@ -43,17 +43,17 @@
             this.label1.Font = new System.Drawing.Font("Arial Rounded MT Bold", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.Location = new System.Drawing.Point(12, 31);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(86, 22);
+            this.label1.Size = new System.Drawing.Size(48, 22);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Archivo:";
+            this.label1.Text = "File:";
             // 
             // tbFile
             // 
             this.tbFile.Enabled = false;
             this.tbFile.Font = new System.Drawing.Font("Century", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbFile.Location = new System.Drawing.Point(104, 33);
+            this.tbFile.Location = new System.Drawing.Point(57, 33);
             this.tbFile.Name = "tbFile";
-            this.tbFile.Size = new System.Drawing.Size(274, 22);
+            this.tbFile.Size = new System.Drawing.Size(321, 22);
             this.tbFile.TabIndex = 1;
             // 
             // pbLoad
@@ -102,7 +102,7 @@
             this.Name = "frmCleaner";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Limpiador de Reportes de Excel";
+            this.Text = "Excel Reports Cleaner";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.frmCleaner_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.pbLoad)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbClean)).EndInit();

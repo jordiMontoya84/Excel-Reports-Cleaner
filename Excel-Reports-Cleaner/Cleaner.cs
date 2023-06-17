@@ -53,7 +53,6 @@ namespace Excel_Reports_Cleaner
                         readCell(cell.Substring(1));
                 }
             }
-            pBarClean.PerformStep();
         }
 
         private void readCell(string cell)
@@ -123,7 +122,11 @@ namespace Excel_Reports_Cleaner
             {
                 Excel.Worksheet sheet = excelBook.Worksheets[i];
                 cells.Clear();
-                readData(sheet.UsedRange.Formula);
+                try
+                {
+                    readData(sheet.UsedRange.Formula);
+                }catch(Exception ex) { }
+
                 foreach(string cell in cells)
                 {
                     string[] token = cell.Split(':');
@@ -135,7 +138,9 @@ namespace Excel_Reports_Cleaner
                             sheet.Range[token[0], token[0]].Value2 = "";
                     }catch(Exception ex) {}
                 }
+
                 pBarClean.PerformStep();
+                System.Runtime.InteropServices.Marshal.ReleaseComObject(sheet);
             }
 
             SaveFileDialog sfd = new SaveFileDialog();
@@ -147,11 +152,13 @@ namespace Excel_Reports_Cleaner
             }
                 
             excelBook.Close(false);
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelBook);
         }
 
         private void frmCleaner_FormClosed(object sender, FormClosedEventArgs e)
         {
             excelApp.Quit();
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(excelApp);
         }
     }
 }
