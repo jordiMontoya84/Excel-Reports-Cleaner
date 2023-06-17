@@ -116,7 +116,7 @@ namespace Excel_Reports_Cleaner
             Excel.Workbook excelBook = excelApp.Workbooks.Open(tbFile.Text);
             int nSheets = excelBook.Worksheets.Count;
             pBarClean.Value = 0;
-            pBarClean.Maximum = nSheets * 2;
+            pBarClean.Maximum = nSheets;
 
             for (int i = 1; i <= nSheets; i++)
             {
